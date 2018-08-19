@@ -12,7 +12,7 @@ new Vue({
                 ';↑↑↑ YOUR CODE ↑↑↑\n' +
                 '\n' +
                 'M83                              ;extruder relative positioning\n' +
-                'G1 Y-4 X0 Z15 F6000              ;move on cleaning position\n' +
+                'G1 Y0 X0 Z15 F6000               ;move on cleaning position\n' +
                 'G1 E' + (this.filamentParkingPosition - 10) + ' F10000                   ;undo storage position\n' +
                 'G1 E10 F300                      ;extrude another 10mm to finish undo storage\n' +
                 'G1 E40 F150                      ;extrude 40mm to clean the nozzle\n' +
