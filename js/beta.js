@@ -79,14 +79,14 @@ new Vue({
             }
 
             return '\n;↓↓↓ Cooling filament ↓↓↓\n' +
-                'G1 E' + length + ' F1500\n' +
-                'G1 E-' + length + ' F1600\n' +
-                'G1 E' + length + ' F1700\n' +
-                'G1 E-' + length + ' F1800\n' +
-                'G1 E' + length + ' F1900\n' +
-                'G1 E-' + length + ' F2000\n' +
-                'G1 E' + length + ' F2100\n' +
-                'G1 E-' + length + ' F2200\n' +
+                'G1 E' + length + ' F500\n' +
+                'G1 E-' + length + ' F600\n' +
+                'G1 E' + length + ' F700\n' +
+                'G1 E-' + length + ' F800\n' +
+                'G1 E' + length + ' F900\n' +
+                'G1 E-' + length + ' F1000\n' +
+                'G1 E' + length + ' F1100\n' +
+                'G1 E-' + length + ' F1200\n' +
                 ';↑↑↑ Cooling filament ↑↑↑\n\n';
         }
     },
