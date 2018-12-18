@@ -45,7 +45,7 @@ new Vue({
                 '\n' +
                 'M83 ; extruder relative positioning\n' +
                 'G90 ; absolute positioning\n' +
-                'G1 X' + this.format(this.wasteBlockX - (this.wasteBlockSize * 0.6)) + ' Y' + this.format(this.wasteBlockY + (this.wasteBlockSize * 0.6)) + ' F3600 ; move ON the waste block\n' +
+                'G1 X' + this.format(this.wasteBlockX - (this.wasteBlockSize * 0.6)) + ' Y' + this.format(+this.wasteBlockY + (this.wasteBlockSize * 0.6)) + ' F3600 ; move ON the waste block\n' +
                 'G91 ; relative positioning\n' +
                 'G1 Z-2 F3600 ; touch the waste block\n' +
                 'G1 E' + this.format(this.filamentParkingPosition - 15) + ' F' + this.max(1000, this.maxExtruderFeedrate) + ' ; undo storage position\n' +
