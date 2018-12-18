@@ -1,7 +1,7 @@
 new Vue({
     el: '#app',
     data: {
-        maxExtruderFeedrate: 10000,
+        maxExtruderFeedrate: 3500,
         wasteBlockX: 50,
         wasteBlockY: 150,
         wasteBlockSize: 32,
@@ -25,7 +25,6 @@ new Vue({
         endGcode: function () {
             return ';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n' +
                 'M104 S0 ; extruder heater off\n' +
-                'M140 S0 ; heated bed heater off (if you have it)\n' +
                 'M83 ; extruder relative positioning\n' +
                 'G91 ; relative positioning\n' +
                 'G1 E-1 F300 ; retract the filament a bit before lifting the nozzle, to release some of the pressure\n' +
@@ -50,7 +49,8 @@ new Vue({
                 'G1 Z-2 F3600 ; touch the waste block\n' +
                 'G1 E' + this.format(this.filamentParkingPosition - 15) + ' F' + this.max(1000, this.maxExtruderFeedrate) + ' ; undo storage position\n' +
                 'G1 E5 F500 ; extrude another 5mm\n' +
-                'G1 E7 F200 ; extrude last 10 - 3 mm to finish safe undo storage\n' +
+                'G1 E7 F200 ; extrude another 7 mm to finish safe undo storage\n' +
+                'G1 E3 F100 ; extrude last 3 mm to finish undo storage\n' +
                 'G92 E0 ; zero the extruded length again\n' +
                 'G90 ; absolute positioning\n' +
                 ';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;';
@@ -80,13 +80,11 @@ new Vue({
 
             return '\n;↓↓↓ Cooling filament ↓↓↓\n' +
                 'G1 E' + length + ' F500\n' +
-                'G1 E-' + length + ' F600\n' +
-                'G1 E' + length + ' F700\n' +
-                'G1 E-' + length + ' F800\n' +
-                'G1 E' + length + ' F900\n' +
-                'G1 E-' + length + ' F1000\n' +
-                'G1 E' + length + ' F1100\n' +
-                'G1 E-' + length + ' F1200\n' +
+                'G1 E-' + length + ' F500\n' +
+                'G1 E' + length + ' F400\n' +
+                'G1 E-' + length + ' F400\n' +
+                'G1 E' + length + ' F300\n' +
+                'G1 E-' + length + ' F300\n' +
                 ';↑↑↑ Cooling filament ↑↑↑\n\n';
         }
     },
