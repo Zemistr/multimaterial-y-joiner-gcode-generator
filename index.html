@@ -5,9 +5,9 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>G-code generator | Multimaterial Y joiner</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
-          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <title>G-code generator 2.0 | Multimaterial Y joiner</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <style>
         body {
             padding-top: 3.5rem;
@@ -27,11 +27,8 @@
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav ml-md-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="index.html">Cura 3.4</a>
+                    <a class="nav-link" href="/multimaterial-y-joiner-gcode-generator">Cura 3.6</a>
                 </li>
-                <!--<li class="nav-item">-->
-                    <!--<a class="nav-link" href="#">Slic3r PE</a>-->
-                <!--</li>-->
             </ul>
         </div>
     </nav>
@@ -39,40 +36,94 @@
     <main role="main" id="app">
         <div class="jumbotron">
             <div class="container">
-                <h1 class="display-3">G-code generator (Cura 3.4)</h1>
-                <p class="lead">This G-code generator will help you generate G-code for your printer. It's designed for
-                    <a
-                            href="https://www.thingiverse.com/thing:3039887" target="_blank">Multimaterial Y joiner</a>.
+                <h1 class="display-3">G-code generator 2.0 (Cura 3.6)</h1>
+                <p class="lead">This G-code generator 2.0 will help you generate G-code for your printer. It's designed
+                    for
+                    <a href="https://www.thingiverse.com/thing:3039887" target="_blank">Multimaterial Y joiner</a>.
+                </p>
+                <p class="lead">Online manual is available on Youtube <a
+                        href="https://www.youtube.com/watch?v=fDtzsvVx-iA" target="_blank">Multimaterial Y joiner -
+                    Online G-Code generator + Cura</a>.
                 </p>
 
                 <hr>
 
                 <form>
                     <div class="form-row">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
+                            <label for="filamentCoolingPosition">Filament cooling position</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="filamentCoolingPosition"
+                                       placeholder="Enter distance from the nozzle in mm (e.g.: 90)"
+                                       v-model="filamentCoolingPosition">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">mm &gt;= 10</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="coolingLength">Filament cooling length</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="coolingLength"
+                                       placeholder="Enter length in mm (e.g.: 10)"
+                                       v-model="coolingLength">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">mm</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
                             <label for="filamentParkingPosition">Filament parking position</label>
                             <div class="input-group">
                                 <input type="number" class="form-control" id="filamentParkingPosition"
-                                       placeholder="Enter distance in mm (e.g.: 140)" v-model="filamentParkingPosition">
-                                <div class="input-group-addon">mm</div>
+                                       placeholder="Enter distance from the nozzle in mm (e.g.: 140)"
+                                       v-model="filamentParkingPosition">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">mm &gt;= cooling position</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group col-md-3">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
                             <label for="wasteBlockX">Waste block X</label>
                             <input type="number" class="form-control" id="wasteBlockX"
                                    placeholder="X position of the waste block" v-model="wasteBlockX">
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label for="wasteBlockY">Waste block Y</label>
                             <input type="number" class="form-control" id="wasteBlockY"
                                    placeholder="Y position of the waste block" v-model="wasteBlockY">
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label for="wasteBlockSize">Waste block size</label>
                             <div class="input-group">
                                 <input type="number" class="form-control" id="wasteBlockSize"
                                        placeholder="Size of waste the block" v-model="wasteBlockSize">
-                                <div class="input-group-addon">mm</div>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">mm</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="numberOfExtruders">Number of extruders</label>
+                            <select id="numberOfExtruders" class="form-control" v-model="numberOfExtruders">
+                                <option :value="2">2</option>
+                                <option :value="3">3</option>
+                                <option :value="4">4</option>
+                                <option :value="5">5</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="maxExtruderFeedrate">Max extruder feedrate</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="maxExtruderFeedrate"
+                                       placeholder="Max extruder feedrate" v-model="maxExtruderFeedrate">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">&gt;= 1000</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -82,12 +133,23 @@
 
         <div class="container">
             <div class="row">
+                <div class="col-md-6" v-if="primeExtruders">
+                    <h2>Prepare/fix filaments G-code</h2>
+                    <form>
+                        <div class="form-group">
+                            <textarea readonly class="form-control form-control-sm"
+                                      rows="15">{{ prepareGcode() }}</textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-6">
                     <h2>Start G-code</h2>
                     <form>
                         <div class="form-group">
                             <textarea readonly class="form-control form-control-sm"
-                                      rows="15">{{ startGcode }}</textarea>
+                                      rows="15">{{ startGcode() }}</textarea>
                         </div>
                     </form>
                 </div>
@@ -95,27 +157,28 @@
                     <h2>End G-code</h2>
                     <form>
                         <div class="form-group">
-                            <textarea readonly class="form-control form-control-sm" rows="15">{{ endGcode }}</textarea>
+                            <textarea readonly class="form-control form-control-sm"
+                                      rows="15">{{ endGcode() }}</textarea>
                         </div>
                     </form>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" v-for="extruder in numberOfExtruders">
                 <div class="col-md-6">
-                    <h2>Start Extruder G-code</h2>
+                    <h2>Start Extruder #{{ extruder }} G-code</h2>
                     <form>
                         <div class="form-group">
                             <textarea readonly class="form-control form-control-sm"
-                                      rows="15">{{ startExtruderGcode }}</textarea>
+                                      rows="15">{{ startExtruderGcode(extruder) }}</textarea>
                         </div>
                     </form>
                 </div>
                 <div class="col-md-6">
-                    <h2>End Extruder G-code</h2>
+                    <h2>End Extruder #{{ extruder }} G-code</h2>
                     <form>
                         <div class="form-group">
                             <textarea readonly class="form-control form-control-sm"
-                                      rows="15">{{ endExtruderGcode }}</textarea>
+                                      rows="15">{{ endExtruderGcode() }}</textarea>
                         </div>
                     </form>
                 </div>
@@ -137,19 +200,19 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
-        integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
         crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
-        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
 <script src="js/app.js"></script>
-    
+
 <!-- Matomo Image Tracker-->
-<img src="https://piwik.zdft.net/piwik.php?idsite=2&amp;rec=1" style="border:0" alt="" />
+<img src="https://piwik.zdft.net/piwik.php?idsite=2&amp;rec=1" style="border:0" alt=""/>
 <!-- End Matomo -->
 </body>
 </html>
