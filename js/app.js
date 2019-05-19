@@ -182,11 +182,11 @@ new Vue({
             let startPosition, movement;
 
             if (isOdd) {
-                let wasteBlockX0 = this.format(this.wasteBlockX - this.wasteBlockSize);
+                let wasteBlockX0 = this.format(+this.wasteBlockX - +this.wasteBlockSize);
                 startPosition = this.moveGcode('X' + wasteBlockX0 + ' Y' + this.wasteBlockCenterY, 3000);
                 movement = 'X+' + this.format(this.wasteBlockSize);
             } else {
-                let wasteBlockY0 = this.format(this.wasteBlockY + this.wasteBlockSize);
+                let wasteBlockY0 = this.format(+this.wasteBlockY + +this.wasteBlockSize);
                 startPosition = this.moveGcode('X' + this.wasteBlockCenterX + ' Y' + wasteBlockY0, 3000);
                 movement = 'Y-' + this.format(this.wasteBlockSize);
             }
